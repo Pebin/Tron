@@ -18,7 +18,7 @@ public class yourclass extends Core implements KeyListener, MouseListener,
 		super.init();
 
         players.add(new Player(40, 40, Direction.LEFT, Color.GREEN));
-        players.add(new Player(600, 440, Direction.RIGHT, Color.RED));
+        //players.add(new Player(600, 440, Direction.RIGHT, Color.RED));
 
 
 		Window w = sm.getFullScreenWindow();
@@ -92,7 +92,7 @@ public class yourclass extends Core implements KeyListener, MouseListener,
      */
     private void position(Player player) {
         switch(player.currentDirection){
-            case DOWN:
+            case UP:
                 if (player.centrey > 0){
                     player.centrey -= player.moveAmount;
                 } else {
@@ -106,7 +106,7 @@ public class yourclass extends Core implements KeyListener, MouseListener,
                     player.centrex = 0;
                 }
                 break;
-            case UP:
+            case DOWN:
                 if (player.centrey < sm.getHeight()){
                     player.centrey += player.moveAmount;
                 } else {
@@ -124,17 +124,19 @@ public class yourclass extends Core implements KeyListener, MouseListener,
     }
 
 	public void keyPressed(KeyEvent e) {
-		for(int i = 0;i< players.size();i++) {
+        for(int i = 0;i< players.size();i++) {
+            int tmp = 0;
             for(Integer key : Controls.controls.get(i)) {
                 if(e.getKeyCode() == key) {
-                    changeDirection(players.get(i), key);
+                    changeDirection(players.get(i), tmp);
                 }
+                tmp++;
             }
         }
 	}
 
     private void changeDirection(Player player, Integer keyPressed) {
-        if(player.currentDirection.ordinal() != (keyPressed+2) % 4) {
+        if(player.currentDirection.ordinal() != ((keyPressed + 2) % 4)) {
             player.currentDirection = parseDirection(keyPressed);
         }
     }
@@ -145,12 +147,21 @@ public class yourclass extends Core implements KeyListener, MouseListener,
      * @return
      */
     private Direction parseDirection(Integer keyPressed) {
-        switch(keyPressed) {
+        if(keyPressed == 0) {
+            return Direction.UP;
+        } else if(keyPressed == 1) {
+            return Direction.RIGHT;
+        } else if(keyPressed == 2) {
+            return Direction.DOWN;
+        } else {
+            return Direction.LEFT;
+        }
+        /*switch(keyPressed) {
             case 0: return Direction.UP;
             case 1: return Direction.RIGHT;
             case 2: return Direction.DOWN;
         }
-        return Direction.LEFT;
+        return Direction.LEFT;*/
     }
 
 	public void keyReleased(KeyEvent e) {
