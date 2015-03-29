@@ -17,8 +17,9 @@ public class yourclass extends Core implements KeyListener, MouseListener,
 	public void init() {
 		super.init();
 
-        players.add(new Player(40, 40, Direction.LEFT, Color.GREEN));
-        //players.add(new Player(600, 440, Direction.RIGHT, Color.RED));
+        players.add(new Player(new Tuple(40, 40), Direction.LEFT, Color.GREEN));
+        players.add(new Player(new Tuple(600, 440), Direction.RIGHT, Color.RED));
+        players.add(new Player(new Tuple(300, 200), Direction.RIGHT, Color.BLUE));
 
 
 		Window w = sm.getFullScreenWindow();
@@ -32,7 +33,7 @@ public class yourclass extends Core implements KeyListener, MouseListener,
 	}
 
 	public void draw(Graphics2D g) {
-	    for(Player player: players) {
+        for(Player player: players) {
             position(player);
         }
         if (collision()) {
@@ -65,7 +66,7 @@ public class yourclass extends Core implements KeyListener, MouseListener,
      */
     private void addToPath() {
         for(Player player: players) {
-            player.path.add(new Tuple(player.centrex, player.centrey));
+            player.path.add(new Tuple(player.location.x, player.location.y));
         }
     }
 
@@ -74,10 +75,12 @@ public class yourclass extends Core implements KeyListener, MouseListener,
      * @return
      */
     private boolean collision() {
+        //3 ugly IFs because contains method didn't work
         for(Player player: players) {
-            for(int i = players.indexOf(player); i < players.size(); i++) {
-                for(Tuple position : players.get(i).path) {
-                    if (player.centrex == position.x && player.centrey == position.y) {
+            for(Player other: players) {
+               for(Tuple<Integer, Integer> pair : other.path) {
+                    if (player.location.equals(pair)) {
+                        System.out.println("OK");
                         return true;
                     }
                 }
@@ -93,37 +96,40 @@ public class yourclass extends Core implements KeyListener, MouseListener,
     private void position(Player player) {
         switch(player.currentDirection){
             case UP:
-                if (player.centrey > 0){
-                    player.centrey -= player.moveAmount;
+                if (player.location.y > 0){
+                    player.location.y -= player.moveAmount;
                 } else {
-                    player.centrey = sm.getHeight();
+                    player.location.y = sm.getHeight();
                 }
                 break;
             case RIGHT:
-                if (player.centrex < sm.getWidth()){
-                    player.centrex +=player.moveAmount;
+                if (player.location.x < sm.getWidth()){
+                    player.location.x += player.moveAmount;
                 } else {
-                    player.centrex = 0;
+                    player.location.x = 0;
                 }
                 break;
             case DOWN:
-                if (player.centrey < sm.getHeight()){
-                    player.centrey += player.moveAmount;
+                if (player.location.y < sm.getHeight()){
+                    player.location.y += player.moveAmount;
                 } else {
-                    player.centrey = 0;
+                    player.location.y = 0;
                 }
                 break;
             case LEFT:
-                if (player.centrex > 0){
-                    player.centrex -=player.moveAmount;
+                if (player.location.x > 0){
+                    player.location.x -=player.moveAmount;
                 } else {
-                    player.centrex = sm.getWidth();
+                    player.location.x = sm.getWidth();
                 }
                 break;
         }
     }
 
 	public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            System.exit(1);
+        }
         for(int i = 0;i< players.size();i++) {
             int tmp = 0;
             for(Integer key : Controls.controls.get(i)) {

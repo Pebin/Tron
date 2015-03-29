@@ -8,16 +8,14 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    int centrex;
-    int centrey;
+    Tuple<Integer, Integer> location;
     Direction currentDirection;
     int moveAmount = 5;
     Color color;
     ArrayList<Tuple<Integer, Integer>> path = new ArrayList();
 
-    public Player(int centrex, int centrey, Direction currDirection, Color color) {
-        this.centrex = centrex;
-        this.centrey = centrey;
+    public Player(Tuple<Integer, Integer> location, Direction currDirection, Color color) {
+        this.location = location;
         currentDirection = currDirection;
         this.color = color;
     }
