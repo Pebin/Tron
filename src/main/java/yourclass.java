@@ -80,7 +80,6 @@ public class yourclass extends Core implements KeyListener, MouseListener,
             for(Player other: players) {
                for(Tuple<Integer, Integer> pair : other.path) {
                     if (player.location.equals(pair)) {
-                        System.out.println("OK");
                         return true;
                     }
                 }
@@ -143,7 +142,7 @@ public class yourclass extends Core implements KeyListener, MouseListener,
 
     private void changeDirection(Player player, Integer keyPressed) {
         if(player.currentDirection.ordinal() != ((keyPressed + 2) % 4)) {
-            player.currentDirection = parseDirection(keyPressed);
+            player.currentDirection = parseDirection(keyPressed%4);
         }
     }
 
@@ -153,21 +152,12 @@ public class yourclass extends Core implements KeyListener, MouseListener,
      * @return
      */
     private Direction parseDirection(Integer keyPressed) {
-        if(keyPressed == 0) {
-            return Direction.UP;
-        } else if(keyPressed == 1) {
-            return Direction.RIGHT;
-        } else if(keyPressed == 2) {
-            return Direction.DOWN;
-        } else {
-            return Direction.LEFT;
-        }
-        /*switch(keyPressed) {
+        switch(keyPressed) {
             case 0: return Direction.UP;
             case 1: return Direction.RIGHT;
             case 2: return Direction.DOWN;
         }
-        return Direction.LEFT;*/
+        return Direction.LEFT;
     }
 
 	public void keyReleased(KeyEvent e) {
@@ -179,6 +169,11 @@ public class yourclass extends Core implements KeyListener, MouseListener,
 	}
 
 	public void mouseClicked(MouseEvent e) {
+        if(e.getButton() == 1) {
+            changeDirection(players.get(0), players.get(0).currentDirection.ordinal() - 1);
+        } else if (e.getButton() == 3) {
+            changeDirection(players.get(0), players.get(0).currentDirection.ordinal() + 1);
+        }
 
 	}
 
