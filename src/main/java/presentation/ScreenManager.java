@@ -1,4 +1,4 @@
-package main.java;
+package main.java.presentation;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
