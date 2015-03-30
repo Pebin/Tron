@@ -3,16 +3,16 @@ package main.java.model;
 import java.awt.Color;
 import java.util.ArrayList;
 
-/**
- * Created by Michal on 29. 3. 2015.
+/*
+ @author Barton, Rajcan
  */
 public class Player {
 
     private Tuple<Integer, Integer> location;
     private Direction currentDirection;
-    private int moveAmount;
+    private int moveAmount = 5;
     private Color color;
-    private ArrayList<Tuple<Integer, Integer>> path;
+    private ArrayList<Tuple<Integer, Integer>> path = new ArrayList();
 
     public Direction getCurrentDirection() {
         return currentDirection;
@@ -58,7 +58,5 @@ public class Player {
         this.location = location;
         currentDirection = currDirection;
         this.color = color;
-        path = new ArrayList();
-        moveAmount = 5;
     }
 }

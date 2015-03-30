@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Michal on 29. 3. 2015.
+/*
+ @author Barton, Rajcan
  */
 public class Controls {
     public static final Map<Integer, Integer[]> controls = new HashMap<Integer, Integer[]>();

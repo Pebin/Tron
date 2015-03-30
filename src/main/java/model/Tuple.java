@@ -1,7 +1,7 @@
 package main.java.model;
 
-/**
- * Created by Michal on 29. 3. 2015.
+/*
+ @author Barton, Rajcan
  */
 public class Tuple<X, Y> {
     public X x;

@@ -12,6 +12,9 @@ import main.java.model.Tuple;
 import main.java.presentation.Presentation;
 import main.java.presentation.ScreenManager;
 
+/*
+ @author Barton, Rajcan
+ */
 public class Tron {
     public static void main(String[] args) {
         List<Player> players = new ArrayList<Player>();

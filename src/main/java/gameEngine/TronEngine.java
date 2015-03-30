@@ -19,8 +19,8 @@ import main.java.model.Player;
 import main.java.model.Tuple;
 import main.java.presentation.Presentation;
 
-/**
- * Created by Michal on 30. 3. 2015.
+/*
+ @author Barton, Rajcan
  */
 public class TronEngine extends GameEngine {
     private List<Player> players;
@@ -60,7 +60,6 @@ public class TronEngine extends GameEngine {
 
     /**
      * Parses placement of press key according to Controls class array of keys for each player
-     *
      */
     private Direction parseDirection(Integer keyPressed) {
         switch (keyPressed) {
