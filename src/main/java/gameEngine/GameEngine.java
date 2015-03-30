@@ -1,5 +1,6 @@
 package main.java.gameEngine;
 
+import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,24 +14,33 @@ import main.java.presentation.Presentation;
  * Created by Michal on 30. 3. 2015.
  */
 public abstract class GameEngine implements KeyListener, MouseListener, MouseMotionListener {
-
-    protected GameEngine(Presentation presentation, ScreenManager screenManager, List<Player> players) {
+    protected GameEngine(Presentation presentation, ScreenManager screenManager) {
         this.presentation = presentation;
         this.screenManager = screenManager;
-        this.players = players;
     }
 
     protected boolean running = true;
     protected Presentation presentation;
     protected ScreenManager screenManager;
-    protected List<Player> players;
 
-    public abstract void gameLoop();
+    private void gameLoop(int refreshRate){
+        while (running) {
+            gameUpdate();
+
+            try {
+                Thread.sleep(refreshRate);
+            } catch (Exception ex) {}
+        }
+    }
 
     public void run(){
+        run(20);
+    }
+
+    public void run(int refreshRate){
         try{
             init();
-            gameLoop();
+            gameLoop(refreshRate);
         }finally{
             screenManager.restoreScreen();
         }
@@ -42,4 +52,5 @@ public abstract class GameEngine implements KeyListener, MouseListener, MouseMot
 
 
     public abstract void init();
+    public abstract void gameUpdate();
 }

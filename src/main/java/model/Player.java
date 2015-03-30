@@ -8,11 +8,11 @@ import java.util.ArrayList;
  */
 public class Player {
 
-    Tuple<Integer, Integer> location;
-    Direction currentDirection;
-    int moveAmount = 5;
-    Color color;
-    ArrayList<Tuple<Integer, Integer>> path = new ArrayList();
+    private Tuple<Integer, Integer> location;
+    private Direction currentDirection;
+    private int moveAmount;
+    private Color color;
+    private ArrayList<Tuple<Integer, Integer>> path;
 
     public Direction getCurrentDirection() {
         return currentDirection;
@@ -42,8 +42,8 @@ public class Player {
         return path;
     }
 
-    public void setPath(ArrayList<Tuple<Integer, Integer>> path) {
-        this.path = path;
+    public void extendPath(Tuple<Integer, Integer> newPoint) {
+        this.path.add(newPoint);
     }
 
     public Color getColor() {
@@ -58,5 +58,7 @@ public class Player {
         this.location = location;
         currentDirection = currDirection;
         this.color = color;
+        path = new ArrayList();
+        moveAmount = 5;
     }
 }

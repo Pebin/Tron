@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.gameEngine.BGEngine;
+import main.java.gameEngine.TronEngine;
 import main.java.gameEngine.GameEngine;
 import main.java.model.Direction;
 import main.java.model.Player;
@@ -22,7 +22,7 @@ public class Tron {
         ScreenManager screenManager = new ScreenManager();
         Presentation presentation = new Presentation();
 
-        GameEngine gameEngine = new BGEngine(presentation, screenManager, players);
+        GameEngine gameEngine = new TronEngine(presentation, screenManager, players);
         gameEngine.run();
     }
 }

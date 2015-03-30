@@ -8,6 +8,8 @@ import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import main.java.presentation.ScreenManager;
@@ -20,9 +22,13 @@ import main.java.presentation.Presentation;
 /**
  * Created by Michal on 30. 3. 2015.
  */
-public class BGEngine extends GameEngine {
-    public BGEngine(Presentation presentation, ScreenManager screenManager, List<Player> players) {
-        super(presentation, screenManager, players);
+public class TronEngine extends GameEngine {
+    private List<Player> players;
+
+    public TronEngine(Presentation presentation, ScreenManager screenManager, List<Player> players) {
+        super(presentation, screenManager);
+
+        this.players = players;
     }
 
     @Override
@@ -33,7 +39,7 @@ public class BGEngine extends GameEngine {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            System.exit(1);
+            stop();
         }
         for (int i = 0; i < players.size(); i++) {
             int tmp = 0;
@@ -53,10 +59,8 @@ public class BGEngine extends GameEngine {
     }
 
     /**
-     * Parses placement of presse key according to Controls class array of keys for each player
+     * Parses placement of press key according to Controls class array of keys for each player
      *
-     * @param keyPressed
-     * @return
      */
     private Direction parseDirection(Integer keyPressed) {
         switch (keyPressed) {
@@ -105,30 +109,24 @@ public class BGEngine extends GameEngine {
     }
 
     @Override
-    public void gameLoop() {
-        while (running) {
-            for (Player player : players) {
-                position(player);
-            }
-            if (collision()) {
-                stop();
-            } else {
-
-                addToPath();
-
-                presentation.draw(screenManager, players);
-
-                try {
-                    Thread.sleep(20);
-                } catch (Exception ex) {
-                }
-            }
+    public void gameUpdate() {
+        for (Player player : players) {
+            updatePlayerPosition(player);
+        }
+        if (collides()) {
+            stop();
+        } else {
+            addToPath();
+            presentation.draw(screenManager, players);
         }
     }
 
     @Override
     public void init() {
-        DisplayMode dm = screenManager.findFirstCompatibaleMode(screenManager.getCompatibleDisplayModes());
+        List<DisplayMode> displayModes = Arrays.asList(screenManager.getCompatibleDisplayModes());
+        Collections.reverse(displayModes);
+        DisplayMode dm = screenManager.findFirstCompatibaleMode((DisplayMode[]) displayModes.toArray());
+
         screenManager.setFullScreen(dm);
         Window w = screenManager.getFullScreenWindow();
         w.addKeyListener(this);
@@ -138,7 +136,6 @@ public class BGEngine extends GameEngine {
         w.setBackground(Color.WHITE);
         w.setForeground(Color.RED);
         w.setCursor(w.getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "null"));
-        running = true;
     }
 
     @Override
@@ -152,21 +149,20 @@ public class BGEngine extends GameEngine {
     }
 
     /**
-     * Adds current position of tron vehicle into it's already passed path.
+     * Adds current updatePlayerPosition of tron vehicle into it's already passed path.
      */
     private void addToPath() {
         for (Player player : players) {
-            player.getPath().add(new Tuple(player.getLocation().x, player.getLocation().y));
+            player.extendPath(new Tuple(player.getLocation().x, player.getLocation().y));
         }
     }
 
     /**
-     * Checks if some bike has collision.
+     * Checks if some bike has collides.
      *
      * @return
      */
-    private boolean collision() {
-        //3 ugly IFs because contains method didn't work
+    private boolean collides() {
         for (Player player : players) {
             for (Player other : players) {
                 for (Tuple<Integer, Integer> pair : other.getPath()) {
@@ -184,7 +180,7 @@ public class BGEngine extends GameEngine {
      *
      * @param player
      */
-    private void position(Player player) {
+    private void updatePlayerPosition(Player player) {
         switch (player.getCurrentDirection()) {
             case UP:
                 if (player.getLocation().y > 0) {
