@@ -1,8 +1,6 @@
 package main.java.gameEngine;
 
 import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import main.java.presentation.ScreenManager;
 import main.java.presentation.Presentation;
@@ -10,7 +8,7 @@ import main.java.presentation.Presentation;
 /*
  @author Barton, Rajcan
  */
-public abstract class GameEngine implements KeyListener, MouseListener, MouseMotionListener {
+public abstract class GameEngine {
     protected GameEngine(Presentation presentation, ScreenManager screenManager) {
         this.presentation = presentation;
         this.screenManager = screenManager;

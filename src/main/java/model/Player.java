@@ -1,7 +1,9 @@
 package main.java.model;
 
+
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.EventListener;
 
 /*
  @author Barton, Rajcan
@@ -13,6 +15,11 @@ public class Player {
     private int moveAmount = 5;
     private Color color;
     private ArrayList<Tuple<Integer, Integer>> path = new ArrayList();
+    private EventListener playerControl;
+
+    public EventListener getPlayerControl() {
+        return playerControl;
+    }
 
     public Direction getCurrentDirection() {
         return currentDirection;
@@ -26,16 +33,8 @@ public class Player {
         return moveAmount;
     }
 
-    public void setMoveAmount(int moveAmount) {
-        this.moveAmount = moveAmount;
-    }
-
     public Tuple<Integer, Integer> getLocation() {
         return location;
-    }
-
-    public void setLocation(Tuple<Integer, Integer> location) {
-        this.location = location;
     }
 
     public ArrayList<Tuple<Integer, Integer>> getPath() {
@@ -50,8 +49,37 @@ public class Player {
         return color;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void assignControls(EventListener listener){
+        playerControl = listener;
+    }
+
+    public void changeDirection(Integer keyPressed) {
+        if (getCurrentDirection().ordinal() != ((keyPressed + 2) % 4)) {
+            setCurrentDirection(parseDirection(keyPressed % 4));
+        }
+    }
+
+    public void turnLeft(){
+        changeDirection(getCurrentDirection().ordinal() - 1);
+    }
+
+    public void turnRight(){
+        changeDirection(getCurrentDirection().ordinal() + 1);
+    }
+
+    /**
+     * Parses placement of press key according to Controls class array of keys for each player
+     */
+    private Direction parseDirection(Integer keyPressed) {
+        switch (keyPressed) {
+            case 0:
+                return Direction.UP;
+            case 1:
+                return Direction.RIGHT;
+            case 2:
+                return Direction.DOWN;
+        }
+        return Direction.LEFT;
     }
 
     public Player(Tuple<Integer, Integer> location, Direction currDirection, Color color) {
